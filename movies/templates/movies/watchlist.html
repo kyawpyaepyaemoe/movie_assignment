@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Watchlist</title>
+</head>
+<body>
+
+    <h1>Watchlist</h1>
+    <a href="{% url 'home' %}">Back to Home</a>
+
+    <h2>Unwatched ({{ unwatched_movies|length }})</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+        {% for movie in unwatched_movies %}
+        <tr>
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.genre }}</td>
+            <td>{{ movie.release_year }}</td>
+            <td>{{ movie.personal_rating }}</td>
+            <td>
+                <a href="{% url 'edit_movie' movie.id %}">Edit</a>
+                <form method="post" action="{% url 'toggle_watched' movie.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Mark as Watched</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nothing unwatched.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Watched ({{ watched_movies|length }})</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+        {% for movie in watched_movies %}
+        <tr>
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.genre }}</td>
+            <td>{{ movie.release_year }}</td>
+            <td>{{ movie.personal_rating }}</td>
+            <td>
+                <a href="{% url 'edit_movie' movie.id %}">Edit</a>
+                <form method="post" action="{% url 'toggle_watched' movie.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Mark as Unwatched</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nothing watched yet.</td></tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
